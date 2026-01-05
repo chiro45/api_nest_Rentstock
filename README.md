@@ -1,98 +1,128 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+**Alquiler-Stock API**
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Breve API para gestión de inmuebles/alquileres y assets (imágenes) construida con NestJS.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**Requisitos**
 
-## Description
+- Node >= 18
+- pnpm (recomendado) o npm
+- MongoDB (URI de conexión)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Instalación**
 
-## Project setup
+1. Clonar el repositorio
 
-```bash
-$ pnpm install
+```
+git clone https://github.com/chiro45/api_nest_Rentstock.git
+cd alquiler-stock
 ```
 
-## Compile and run the project
+2. Instalar dependencias
 
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+```
+pnpm install
 ```
 
-## Run tests
+3. Crear un archivo `.env` en la raíz con las variables necesarias (ver abajo).
 
-```bash
-# unit tests
-$ pnpm run test
+4. Ejecutar en modo desarrollo
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+```
+pnpm run start:dev
 ```
 
-## Deployment
+**Variables de entorno (ejemplo)**
+Rellena valores reales; NUNCA subas secretos al repositorio.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```
+# Base de datos
+MONGODB_URI=mongodb+srv://<usuario>:<password>@cluster.mongodb.net/<dbname>
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# JWT
+JWT_SECRET=tu_secreto_jwt
+JWT_EXPIRATION=7d
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Opcionales
+FRONTEND_URL=http://localhost:5173
+PUBLIC_SITE_URL=http://localhost:4321
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**Scripts útiles**
 
-## Resources
+- `pnpm run start` — iniciar app
+- `pnpm run start:dev` — iniciar con watch
+- `pnpm run start:prod` — ejecutar `dist` en producción
+- `pnpm run build` — compilar
+- `pnpm run test` — ejecutar tests
 
-Check out a few resources that may come in handy when working with NestJS:
+**Autenticación**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- El login devuelve una cookie `access_token` HttpOnly. La estrategia JWT extrae el token desde esa cookie. Para pruebas con `curl` puedes usar un fichero de cookies:
 
-## Support
+```
+# Login y guardar cookie
+curl -c cookie.txt -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"password"}'
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Petición protegida usando la cookie guardada
+curl -b cookie.txt http://localhost:3000/rent
+```
 
-## Stay in touch
+**Endpoints principales**
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Auth**
+  - `POST /auth/login` — Body: `{ email, password }`. Responde `{ user }` y establece cookie `access_token`.
+  - `POST /auth/logout` — Limpia la cookie `access_token`.
+  - `GET /auth/profile` — Protegido. Devuelve datos del usuario actual.
 
-## License
+- **Rent** (protegido — requiere cookie `access_token`)
+  - `POST /rent` — Crear alquiler. Body: `CreateRentDto`.
+  - `GET /rent` — Listar todos los alquileres.
+  - `GET /rent/:id` — Obtener alquiler por id.
+  - `PATCH /rent/:id` — Actualizar alquiler.
+  - `DELETE /rent/:id` — Eliminar alquiler.
+  - `POST /rent/:id/images` — Subir imágenes (`multipart/form-data`, campo `images`, máximo 10). Añade imágenes al rent.
+  - `DELETE /rent/:rentId/images/:assetId` — Eliminar imagen asociada al rent.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Assets**
+  - `POST /assets/upload-multiple?rentId=<id>` — Subir múltiples archivos (`multipart/form-data`, campo `files`, máximo 10). Retorna metadata de cada asset.
+  - `GET /assets/rent/:rentId` — Obtener assets de un rent.
+  - `DELETE /assets/:assetId` — Eliminar asset (y desde Cloudinary si aplica).
+
+Ejemplo de subida múltiple con `curl`:
+
+```
+curl -b cookie.txt -X POST "http://localhost:3000/assets/upload-multiple?rentId=<RENT_ID>" \
+  -F "files=@/ruta/a/imagen1.jpg" -F "files=@/ruta/a/imagen2.jpg"
+```
+
+**Cloudinary (almacenamiento de imágenes)**
+
+- La app usa Cloudinary para subir y eliminar imágenes. Configura las variables `CLOUDINARY_*` en el `.env`.
+- El servicio `src/assets/services/cloudinary.service.ts` se encarga de uploads y borrados.
+
+**Notas de seguridad y despliegue**
+
+- Cambia `JWT_SECRET` por un valor seguro en producción.
+- Asegura la conexión a MongoDB y evita subir `.env` con credenciales.
+- En producción activa `secure: true` para cookies (`NODE_ENV=production` en `.env`).
+
+**Siguientes pasos / pruebas**
+
+- Crear un usuario en la base de datos (seed) o usar el servicio de registro si implementado.
+- Probar login, guardar cookies y probar los endpoints protegidos.
+
+Si querés, puedo:
+
+- Añadir ejemplos concretos de `CreateRentDto`/`UpdateRentDto`.
+- Generar un Postman collection más detallado.
