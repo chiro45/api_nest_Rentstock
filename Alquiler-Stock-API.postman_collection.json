@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "alquiler-stock-api",
+		"name": "Alquiler Stock API",
+		"description": "Colección de endpoints para la API de Alquiler Stock con autenticación JWT y manejo de rentas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// La cookie access_token se guarda automáticamente en Postman"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login con usuario admin. Retorna los datos del usuario y guarda el JWT en una cookie httpOnly."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/profile",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "profile"]
+						},
+						"description": "Obtiene el perfil del usuario autenticado. Requiere cookie JWT del login."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Cierra sesión eliminando la cookie de autenticación."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de autenticación con JWT en cookies httpOnly"
+		},
+		{
+			"name": "Rent",
+			"item": [
+				{
+					"name": "Create Rent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"street\": \"Av. Libertador\",\n  \"sreetNumber\": 1234,\n  \"coordinates\": {\n    \"lat\": -34.603722,\n    \"long\": -58.381592\n  },\n  \"name\": \"Departamento en Palermo\",\n  \"description\": \"Hermoso departamento de 2 ambientes con balcón y vista al parque\",\n  \"price\": 150000,\n  \"number_of_bedrooms\": 1,\n  \"number_of_bathroms\": 1,\n  \"parking\": true,\n  \"available\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rent",
+							"host": ["{{base_url}}"],
+							"path": ["rent"]
+						},
+						"description": "Crea una nueva renta. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Rents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rent",
+							"host": ["{{base_url}}"],
+							"path": ["rent"]
+						},
+						"description": "Obtiene todas las rentas con sus assets poblados. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rent by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rent/:id",
+							"host": ["{{base_url}}"],
+							"path": ["rent", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "RENT_ID_AQUI",
+									"description": "ID de la renta a obtener"
+								}
+							]
+						},
+						"description": "Obtiene una renta específica por ID con sus assets poblados. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Rent",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"price\": 180000,\n  \"available\": false,\n  \"description\": \"Departamento actualizado con nuevo precio\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rent/:id",
+							"host": ["{{base_url}}"],
+							"path": ["rent", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "RENT_ID_AQUI",
+									"description": "ID de la renta a actualizar"
+								}
+							]
+						},
+						"description": "Actualiza los datos de una renta existente. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Images to Rent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": [],
+									"description": "Selecciona hasta 10 imágenes"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/rent/:id/images",
+							"host": ["{{base_url}}"],
+							"path": ["rent", ":id", "images"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "RENT_ID_AQUI",
+									"description": "ID de la renta"
+								}
+							]
+						},
+						"description": "Agrega imágenes a una renta existente. Máximo 10 imágenes por request. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Image from Rent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rent/:rentId/images/:assetId",
+							"host": ["{{base_url}}"],
+							"path": ["rent", ":rentId", "images", ":assetId"],
+							"variable": [
+								{
+									"key": "rentId",
+									"value": "RENT_ID_AQUI",
+									"description": "ID de la renta"
+								},
+								{
+									"key": "assetId",
+									"value": "ASSET_ID_AQUI",
+									"description": "ID del asset a eliminar"
+								}
+							]
+						},
+						"description": "Elimina una imagen específica de una renta. La imagen se elimina de Cloudinary y se marca como isDeleted en DB. Requiere autenticación JWT."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rent/:id",
+							"host": ["{{base_url}}"],
+							"path": ["rent", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "RENT_ID_AQUI",
+									"description": "ID de la renta a eliminar"
+								}
+							]
+						},
+						"description": "Elimina una renta y todas sus imágenes asociadas de Cloudinary. Requiere autenticación JWT."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestionar rentas. Todos requieren autenticación JWT.",
+			"auth": {
+				"type": "noauth"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3005/api/v1",
+			"type": "string"
+		}
+	]
+}
