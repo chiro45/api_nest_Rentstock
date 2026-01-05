@@ -11,6 +11,10 @@ async function bootstrap() {
 	// Configurar cookie-parser para leer cookies en los requests
 	// Necesario para que JwtStrategy pueda extraer el token desde la cookie
 	app.use(cookieParser());
+	app.enableCors({
+		origin: "http://localhost:5173", // frontend
+		credentials: true,
+	});
 
 	app.setGlobalPrefix("api/v1");
 	app.useGlobalPipes(
